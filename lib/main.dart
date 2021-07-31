@@ -1,3 +1,5 @@
+import 'package:flash_chat/screens/chat_list_screen.dart';
+import 'package:flash_chat/screens/loading_screen.dart';
 import 'package:flash_chat/screens/login_screen.dart';
 import 'package:flash_chat/screens/signup_screen.dart';
 import 'package:flash_chat/screens/welcome_screen.dart';
@@ -19,6 +21,8 @@ class Main extends StatelessWidget {
         WelcomeScreen.id: (context) => WelcomeScreen(),
         LoginScreen.id: (context) => LoginScreen(),
         SignupScreen.id: (context) => SignupScreen(),
+        LoadingScreen.id: (context) => LoadingScreen(),
+        ChatListScreen.id: (context) => ChatListScreen(),
       },
     );
   }

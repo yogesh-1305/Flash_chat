@@ -114,12 +114,22 @@ class _LoginScreenState extends State<LoginScreen> {
               child: MaterialButton(
                 onPressed: () {
                   // validating email address
-                  bool isMailValid = RegExp("[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+")
-                      .hasMatch(email);
-                  if (!isMailValid) {
+                  if (!isMailValid(email)) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text('Please Enter a Valid Email!'),
+                      ),
+                    );
+                  } else if (password.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Please Enter a password!'),
+                      ),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Logging you in...'),
                       ),
                     );
                   }

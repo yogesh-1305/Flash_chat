@@ -11,7 +11,9 @@ class SignupScreen extends StatefulWidget {
 class _SignupScreenState extends State<SignupScreen> {
   var email = '';
   var password = '';
+  var reEnteredPassword = '';
   var passwordHidden = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,6 +43,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 //Do something with the user input.
                 email = value;
               },
+              textInputAction: TextInputAction.next,
               decoration: InputDecoration(
                 hintText: 'Enter your email',
                 contentPadding:
@@ -83,7 +86,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   },
                   icon: Icon(Icons.add),
                 ),
-                hintText: 'Enter your password.',
+                hintText: 'Set your password',
                 contentPadding:
                     EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
                 border: OutlineInputBorder(
@@ -100,6 +103,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   borderRadius: BorderRadius.all(Radius.circular(32.0)),
                 ),
               ),
+              textInputAction: TextInputAction.next,
             ),
           ),
           SizedBox(
@@ -108,23 +112,13 @@ class _SignupScreenState extends State<SignupScreen> {
           Padding(
             padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
             child: TextField(
-              obscureText: passwordHidden,
               onChanged: (value) {
                 //Do something with the user input.
-                password = value;
+                reEnteredPassword = value;
               },
+              textInputAction: TextInputAction.next,
               decoration: InputDecoration(
-                suffixIcon: IconButton(
-                  onPressed: () {
-                    setState(() {
-                      passwordHidden
-                          ? passwordHidden = false
-                          : passwordHidden = true;
-                    });
-                  },
-                  icon: Icon(Icons.add),
-                ),
-                hintText: 'Enter your password.',
+                hintText: 'Re-enter your password',
                 contentPadding:
                     EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
                 border: OutlineInputBorder(
@@ -155,12 +149,29 @@ class _SignupScreenState extends State<SignupScreen> {
               child: MaterialButton(
                 onPressed: () {
                   // validating email address
-                  bool isMailValid = RegExp("[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+")
-                      .hasMatch(email);
-                  if (!isMailValid) {
+                  if (!isMailValid(email)) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text('Please Enter a Valid Email!'),
+                      ),
+                    );
+                  } else if (password.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Please set a password'),
+                      ),
+                    );
+                  } else if (password.isNotEmpty &&
+                      password != reEnteredPassword) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Passwords did not match'),
+                      ),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Signing up...'),
                       ),
                     );
                   }
@@ -168,7 +179,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 minWidth: 200.0,
                 height: 42.0,
                 child: Text(
-                  'Log In',
+                  'Sign Up',
                 ),
               ),
             ),
