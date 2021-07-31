@@ -1,3 +1,4 @@
+import 'package:flash_chat/screens/login_screen.dart';
 import 'package:flash_chat/utilities/constants.dart';
 import 'package:flutter/material.dart';
 
@@ -16,9 +17,12 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Image.asset(
-            'images/logo.png',
-            height: 200,
+          Hero(
+            tag: 'logo',
+            child: Image.asset(
+              'images/logo.png',
+              height: 200,
+            ),
           ),
           Text(
             'Flash Chat',
@@ -34,6 +38,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               child: MaterialButton(
                 onPressed: () {
                   //Go to login screen.
+                  Navigator.pushNamed(context, LoginScreen.id);
                 },
                 minWidth: 200.0,
                 height: 42.0,
