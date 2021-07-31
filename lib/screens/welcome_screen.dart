@@ -1,4 +1,5 @@
 import 'package:flash_chat/screens/login_screen.dart';
+import 'package:flash_chat/screens/signup_screen.dart';
 import 'package:flash_chat/utilities/constants.dart';
 import 'package:flutter/material.dart';
 
@@ -57,6 +58,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               child: MaterialButton(
                 onPressed: () {
                   //Go to login screen.
+                  Navigator.pushNamed(context, SignupScreen.id);
                 },
                 minWidth: 200.0,
                 height: 42.0,

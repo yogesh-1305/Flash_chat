@@ -1,4 +1,5 @@
 import 'package:flash_chat/screens/login_screen.dart';
+import 'package:flash_chat/screens/signup_screen.dart';
 import 'package:flash_chat/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -17,6 +18,7 @@ class Main extends StatelessWidget {
       routes: {
         WelcomeScreen.id: (context) => WelcomeScreen(),
         LoginScreen.id: (context) => LoginScreen(),
+        SignupScreen.id: (context) => SignupScreen(),
       },
     );
   }
