@@ -38,6 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
           Padding(
             padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
             child: TextField(
+              textAlign: TextAlign.center,
               onChanged: (value) {
                 //Do something with the user input.
                 email = value;
@@ -53,6 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
           Padding(
             padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
             child: TextField(
+              textAlign: TextAlign.center,
               obscureText: passwordHidden,
               onChanged: (value) {
                 //Do something with the user input.
