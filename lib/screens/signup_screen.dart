@@ -1,3 +1,4 @@
+import 'package:flash_chat/round_button/round_button.dart';
 import 'package:flash_chat/utilities/constants.dart';
 import 'package:flutter/material.dart';
 
@@ -39,30 +40,13 @@ class _SignupScreenState extends State<SignupScreen> {
           Padding(
             padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
             child: TextField(
-              onChanged: (value) {
-                //Do something with the user input.
-                email = value;
-              },
-              textInputAction: TextInputAction.next,
-              decoration: InputDecoration(
-                hintText: 'Enter your email',
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide:
-                      BorderSide(color: Colors.lightBlueAccent, width: 1.0),
-                  borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide:
-                      BorderSide(color: Colors.lightBlueAccent, width: 2.0),
-                  borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                ),
-              ),
-            ),
+                onChanged: (value) {
+                  //Do something with the user input.
+                  email = value;
+                },
+                textInputAction: TextInputAction.next,
+                decoration: inputFieldDecoration.copyWith(
+                    hintText: 'Enter your email...')),
           ),
           SizedBox(
             height: 8.0,
@@ -75,7 +59,8 @@ class _SignupScreenState extends State<SignupScreen> {
                 //Do something with the user input.
                 password = value;
               },
-              decoration: InputDecoration(
+              decoration: inputFieldDecoration.copyWith(
+                hintText: 'set a password...',
                 suffixIcon: IconButton(
                   onPressed: () {
                     setState(() {
@@ -85,22 +70,6 @@ class _SignupScreenState extends State<SignupScreen> {
                     });
                   },
                   icon: Icon(Icons.add),
-                ),
-                hintText: 'Set your password',
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide:
-                      BorderSide(color: Colors.lightBlueAccent, width: 1.0),
-                  borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide:
-                      BorderSide(color: Colors.lightBlueAccent, width: 2.0),
-                  borderRadius: BorderRadius.all(Radius.circular(32.0)),
                 ),
               ),
               textInputAction: TextInputAction.next,
@@ -117,72 +86,45 @@ class _SignupScreenState extends State<SignupScreen> {
                 reEnteredPassword = value;
               },
               textInputAction: TextInputAction.next,
-              decoration: InputDecoration(
-                hintText: 'Re-enter your password',
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide:
-                      BorderSide(color: Colors.lightBlueAccent, width: 1.0),
-                  borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide:
-                      BorderSide(color: Colors.lightBlueAccent, width: 2.0),
-                  borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                ),
-              ),
+              decoration: inputFieldDecoration.copyWith(
+                  hintText: 're-enter password...'),
             ),
           ),
           SizedBox(
             height: 20.0,
           ),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-            child: Material(
-              color: Colors.yellow,
-              borderRadius: BorderRadius.all(Radius.circular(30.0)),
-              elevation: 5.0,
-              child: MaterialButton(
-                onPressed: () {
-                  // validating email address
-                  if (!isMailValid(email)) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Please Enter a Valid Email!'),
-                      ),
-                    );
-                  } else if (password.isEmpty) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Please set a password'),
-                      ),
-                    );
-                  } else if (password.isNotEmpty &&
-                      password != reEnteredPassword) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Passwords did not match'),
-                      ),
-                    );
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Signing up...'),
-                      ),
-                    );
-                  }
-                },
-                minWidth: 200.0,
-                height: 42.0,
-                child: Text(
-                  'Sign Up',
-                ),
-              ),
-            ),
+          RoundButton(
+            text: "Sign Up",
+            color: Colors.yellow,
+            elevation: 5,
+            function: () {
+              // validating email address
+              if (!isMailValid(email)) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Please Enter a Valid Email!'),
+                  ),
+                );
+              } else if (password.isEmpty) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Please set a password'),
+                  ),
+                );
+              } else if (password.isNotEmpty && password != reEnteredPassword) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Passwords did not match'),
+                  ),
+                );
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Signing up...'),
+                  ),
+                );
+              }
+            },
           ),
         ],
       ),

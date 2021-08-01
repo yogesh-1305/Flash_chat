@@ -1,3 +1,4 @@
+import 'package:flash_chat/round_button/round_button.dart';
 import 'package:flash_chat/utilities/constants.dart';
 import 'package:flutter/material.dart';
 
@@ -41,23 +42,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 //Do something with the user input.
                 email = value;
               },
-              decoration: InputDecoration(
-                hintText: 'Enter your email',
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide:
-                      BorderSide(color: Colors.lightBlueAccent, width: 1.0),
-                  borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide:
-                      BorderSide(color: Colors.lightBlueAccent, width: 2.0),
-                  borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                ),
+              decoration: inputFieldDecoration.copyWith(
+                hintText: 'Enter email...',
               ),
             ),
           ),
@@ -72,7 +58,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 //Do something with the user input.
                 password = value;
               },
-              decoration: InputDecoration(
+              decoration: inputFieldDecoration.copyWith(
+                hintText: 'enter password...',
                 suffixIcon: IconButton(
                   onPressed: () {
                     setState(() {
@@ -83,64 +70,38 @@ class _LoginScreenState extends State<LoginScreen> {
                   },
                   icon: Icon(Icons.add),
                 ),
-                hintText: 'Enter your password.',
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide:
-                      BorderSide(color: Colors.lightBlueAccent, width: 1.0),
-                  borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide:
-                      BorderSide(color: Colors.lightBlueAccent, width: 2.0),
-                  borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                ),
               ),
             ),
           ),
           SizedBox(
             height: 20.0,
           ),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-            child: Material(
-              color: Colors.yellow,
-              borderRadius: BorderRadius.all(Radius.circular(30.0)),
-              elevation: 5.0,
-              child: MaterialButton(
-                onPressed: () {
-                  // validating email address
-                  if (!isMailValid(email)) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Please Enter a Valid Email!'),
-                      ),
-                    );
-                  } else if (password.isEmpty) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Please Enter a password!'),
-                      ),
-                    );
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Logging you in...'),
-                      ),
-                    );
-                  }
-                },
-                minWidth: 200.0,
-                height: 42.0,
-                child: Text(
-                  'Log In',
-                ),
-              ),
-            ),
+          RoundButton(
+            text: "Log In",
+            color: Colors.yellow,
+            elevation: 5,
+            function: () {
+              // validating email address
+              if (!isMailValid(email)) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Please Enter a Valid Email!'),
+                  ),
+                );
+              } else if (password.isEmpty) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Please Enter a password!'),
+                  ),
+                );
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Logging you in...'),
+                  ),
+                );
+              }
+            },
           ),
         ],
       ),
