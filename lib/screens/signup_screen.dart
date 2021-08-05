@@ -1,6 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flash_chat/round_button/round_button.dart';
 import 'package:flash_chat/utilities/constants.dart';
 import 'package:flutter/material.dart';
+
+import 'chat_list_screen.dart';
 
 class SignupScreen extends StatefulWidget {
   static const id = 'signup_screen';
@@ -14,6 +17,7 @@ class _SignupScreenState extends State<SignupScreen> {
   var password = '';
   var reEnteredPassword = '';
   var passwordHidden = true;
+  final _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -45,8 +49,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   email = value;
                 },
                 textInputAction: TextInputAction.next,
-                decoration: inputFieldDecoration.copyWith(
-                    hintText: 'Enter your email...')),
+                decoration: inputFieldDecoration.copyWith(labelText: 'Email')),
           ),
           SizedBox(
             height: 8.0,
@@ -60,7 +63,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 password = value;
               },
               decoration: inputFieldDecoration.copyWith(
-                hintText: 'set a password...',
+                labelText: 'Password',
                 suffixIcon: IconButton(
                   onPressed: () {
                     setState(() {
@@ -86,8 +89,8 @@ class _SignupScreenState extends State<SignupScreen> {
                 reEnteredPassword = value;
               },
               textInputAction: TextInputAction.next,
-              decoration: inputFieldDecoration.copyWith(
-                  hintText: 're-enter password...'),
+              decoration:
+                  inputFieldDecoration.copyWith(labelText: 'Re-enter Password'),
             ),
           ),
           SizedBox(
@@ -97,7 +100,7 @@ class _SignupScreenState extends State<SignupScreen> {
             text: "Sign Up",
             color: Colors.yellow,
             elevation: 5,
-            function: () {
+            function: () async {
               // validating email address
               if (!isMailValid(email)) {
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -123,6 +126,28 @@ class _SignupScreenState extends State<SignupScreen> {
                     content: Text('Signing up...'),
                   ),
                 );
+                try {
+                  await _auth.createUserWithEmailAndPassword(
+                      email: email, password: password);
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, ChatListScreen.id, (r) => false);
+                } on FirebaseAuthException catch (e) {
+                  if (e.code == 'weak-password') {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Password is too weak, make it strong.'),
+                      ),
+                    );
+                  } else if (e.code == 'email-already-in-use') {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('This Email address already exists.'),
+                      ),
+                    );
+                  }
+                } catch (e) {
+                  throw e;
+                }
               }
             },
           ),

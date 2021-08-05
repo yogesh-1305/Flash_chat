@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flash_chat/round_button/round_button.dart';
+import 'package:flash_chat/screens/chat_list_screen.dart';
 import 'package:flash_chat/utilities/constants.dart';
 import 'package:flutter/material.dart';
 
@@ -44,7 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 email = value;
               },
               decoration: inputFieldDecoration.copyWith(
-                hintText: 'Enter email...',
+                labelText: 'Email',
               ),
             ),
           ),
@@ -61,7 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 password = value;
               },
               decoration: inputFieldDecoration.copyWith(
-                hintText: 'enter password...',
+                labelText: 'Password',
                 suffixIcon: IconButton(
                   onPressed: () {
                     setState(() {
@@ -85,28 +87,44 @@ class _LoginScreenState extends State<LoginScreen> {
             function: () {
               // validating email address
               if (!isMailValid(email)) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('Please Enter a Valid Email!'),
-                  ),
-                );
+                createSnackBar(context, 'Please Enter a Valid Email!');
               } else if (password.isEmpty) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('Please Enter a password!'),
-                  ),
-                );
+                createSnackBar(context, 'Please Enter a password!');
               } else {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('Logging you in...'),
-                  ),
-                );
+                createSnackBar(context, 'Logging you in...');
+                signInToFirebase(context, email, password);
               }
             },
           ),
         ],
       ),
     );
+  }
+}
+
+void createSnackBar(BuildContext context, String text) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(text),
+    ),
+  );
+}
+
+Future<void> signInToFirebase(
+    BuildContext context, String mail, String pass) async {
+  try {
+    await FirebaseAuth.instance
+        .signInWithEmailAndPassword(email: mail, password: pass);
+    Navigator.pushNamedAndRemoveUntil(
+        context, ChatListScreen.id, (route) => false);
+    ScaffoldMessenger.of(context).clearSnackBars();
+  } on FirebaseAuthException catch (e) {
+    if (e.code == 'user-not-found') {
+      createSnackBar(context, 'No user found for that email.');
+    } else if (e.code == 'wrong-password') {
+      createSnackBar(context, 'Incorrect Password!');
+    }
+  } catch (e) {
+    throw e;
   }
 }
